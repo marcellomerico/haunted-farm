@@ -1,3 +1,6 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+assets/third_party/ 
+.DS_Store
+.DS_Store
