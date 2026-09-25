@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="HauntedFarm"
-run/main_scene="uid://ctk5ovhxq1kqt"
+run/main_scene="uid://3dlgb5xjgsup"
 config/features=PackedStringArray("4.7", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 
