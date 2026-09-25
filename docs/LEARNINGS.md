@@ -8,6 +8,7 @@ Pro Meilenstein ein Abschnitt: was ich gelernt habe, welche Fehler ich gemacht h
 ## Inhalt
 
 - [Meilenstein 1: Spielfigur & Bewegung](#meilenstein-1-spielfigur--bewegung)
+- [Meilenstein 2: Tilemap & Farm-Szene](#meilenstein-2-tilemap--farm-szene)
 
 ---
 
@@ -74,3 +75,91 @@ Pro Meilenstein ein Abschnitt: was ich gelernt habe, welche Fehler ich gemacht h
 - **YAGNI** (*You Aren't Gonna Need It*): Keine Zweige/Features für Fälle bauen, die schon abgedeckt sind.
 - **Einfach schlägt clever**, solange es funktioniert.
 - **Kleine Commits** nach jedem funktionierenden Schritt.
+
+---
+
+## Meilenstein 2: Tilemap & Farm-Szene
+
+**Ergebnis:** Eigene Farm-Szene im Herbst-Look (Gras, Teich, Zäune, Deko), Spielfigur läuft darüber, Kamera folgt. `Farm.tscn` ist die Hauptszene.
+
+### Godot-Konzepte
+
+| Konzept | Was es ist / wofür |
+|---|---|
+| Tile | Kleines quadratisches Grafikstück (bei uns 16×16 px). Welten werden daraus zusammengesetzt wie Lego. |
+| TileSet | Die „Palette“: Tileset-Bild + Tile-Größe. Godot zerschneidet das Bild in Tiles. Hier werden später auch Kollisionen definiert. |
+| `TileMapLayer` | Der Node, auf den man mit dem TileSet malt. Der alte `TileMap`-Node ist seit Godot 4.3 **veraltet** → Achtung bei älteren Tutorials. |
+| Mehrere Layer | `Ground` (Boden, Wasser), `Soil` (umgegrabene Erde, wird später per Code verändert), `Decoration` (Blumen, Steine). |
+| Zeichenreihenfolge | Im Szenenbaum wird von oben nach unten gezeichnet → was **weiter unten** steht, liegt optisch **drüber**. |
+| Resource (`.tres`) | Datenobjekt als Datei, das mehrere Nodes **gemeinsam** nutzen. Alle drei Layer nutzen dieselbe `farm_tileset.tres` → Änderungen gelten überall. |
+| Instanz | Eine fertige Szene (z. B. `Player.tscn`) in eine andere ziehen. Bauplan bleibt die Original-Szene, wie Objekt und Klasse. |
+| Kind-Nodes | Position ist **relativ** zum Eltern-Node. `Camera2D` als Kind vom `Player` folgt automatisch, ohne Code. |
+| Hauptszene | Projekteinstellungen → Anwendung → Ausführen. **F5** startet die Hauptszene, **F6** die gerade offene. |
+| Export-Werte bei Instanzen | Eine Instanz kann `[Export]`-Werte überschreiben. Erkennbar am kleinen Rückgängig-Pfeil im Inspector. |
+
+**Mal-Werkzeuge** (Reiter TileMap unten):
+
+| Taste | Werkzeug | Wofür |
+|---|---|---|
+| D | Stift | Einzelne Tiles |
+| R | Rechteck | Flächen füllen |
+| L | Linie | Zäune, Wege |
+| B | Eimer | Zusammenhängende Fläche füllen |
+| P | Pipette | Tile aus der Karte aufnehmen |
+| E | Radierer | Löschen (oder Rechtsklick beim Malen) |
+
+💡 Mehrere Tiles mit **Shift** auswählen + **Würfel-Symbol** → zufällige Verteilung, wirkt natürlicher.
+
+### Tilemap oder eigene Szene?
+
+| Tilemap | Eigene Szene |
+|---|---|
+| Flach, Spieler läuft drüber oder daneben | Hat Höhe, Spieler kann **dahinter** stehen (→ Y-Sorting) |
+| Kein Verhalten | Tut etwas (wackeln, wachsen, geöffnet werden) |
+| Gras, Wege, Wasser, Blumen, kleine Steine, Zäune | Bäume, Häuser, Truhen, Pflanzen (Bank vorerst als Platzhalter-Tile) |
+
+**Y-Sorting:** Was weiter unten auf dem Bildschirm steht, wird drübergezeichnet. So verdeckt eine Baumkrone die Figur, wenn sie dahinter steht.
+
+### Assets
+
+- `tiles.png`: 864×800 px, 16×16-Tiles, vier Jahreszeiten nebeneinander (Sommer, Frühling, **Herbst** ← nutze ich, Winter). Innerhalb einer Jahreszeit bleiben, sonst passen die Farben nicht.
+- `tree_shake.png`: 4 Spalten × 8 Zeilen à 32×32 → 8 Baumtypen mit je 4 Frames Wackel-Animation. Wird später eine eigene Baum-Szene.
+
+### Szenen-Struktur
+
+```
+Farm (Node2D)              ← Farm.tscn = Hauptszene
+├── Ground (TileMapLayer)
+├── Soil (TileMapLayer)
+├── Decoration (TileMapLayer)
+└── Player (Instanz von Player.tscn)
+    ├── AnimatedSprite2D
+    └── Camera2D
+```
+
+Dorf, Dungeon und später das Startmenü werden **eigene Szenen** nach demselben Muster.
+
+### Fehler, die ich gemacht habe
+
+1. **Farm mit „Editierbaren Kindern“ in `Main` bearbeitet.** Änderungen landen dann womöglich in `main.tscn` statt in `Farm.tscn`. Löschen der Instanz hätte Arbeit vernichten können.
+   *Rettung:* Rechtsklick → **Lokal machen** → **Zweig als Szene speichern**.
+2. **`Camera2D` unter `AnimatedSprite2D` statt unter `Player`.** Funktioniert, ist aber unsauber: Die Kamera gehört zum Spieler, nicht zur Grafik.
+3. **Input-Aktionen plötzlich weg.** Die Input Map steckt in `project.godot`, die Datei war auf einem alten Stand.
+   *Lektion:* Mit `git diff project.godot` nachsehen, was sich geändert hat.
+
+### Git
+
+| Befehl / Praxis | Wofür |
+|---|---|
+| `git status` | Vor jedem Commit: Was wird eigentlich committet? |
+| `git diff <datei>` | Was hat sich seit dem letzten Commit geändert? |
+| `wip:`-Commit | *Work in progress*, Sicherung vor riskanten Umbauten |
+| Atomare Commits | Ein Commit = eine logische Änderung (`feat`, `refactor`, `fix` getrennt). Gezielt mit `git add <datei>`. 💼 Leichtere Reviews, gezieltes `git revert`. |
+| Dateien im **Godot**-Dateisystem löschen | Nicht im Finder → Godot prüft Verweise. |
+| Alten Code löschen statt auskommentieren | Er liegt ja in der Git-History. 💼 Auskommentierter Code wird in Reviews angemerkt. |
+
+### Prinzipien
+
+- **Separation of Concerns:** Jede Ebene hat genau eine Aufgabe (z. B. `Soil` nur für umgegrabene Erde). 💼 Schichtenarchitektur (UI / Logik / Datenbank).
+- **Single Source of Truth:** Ein gemeinsames TileSet statt Kopien. 💼 Zentrale Konfiguration statt verstreuter Werte.
+- **Erst planen, dann bauen:** Eine grobe Skizze der Karte hilft beim Malen und bei der Struktur.
