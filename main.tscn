@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://d36u3udh1pxaw" path="res://Main.cs" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://dj24ugxefekqx" path="res://scenes/player.tscn" id="2_h2yge"]
 [ext_resource type="Texture2D" uid="uid://dxl3upd7vymip" path="res://assets/third_party/character_v.2/characters/char1.png" id="3_1bvp3"]
+[ext_resource type="Script" uid="uid://kcctituwm3ga" path="res://scenes/Player.cs" id="3_lquwl"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lquwl"]
 atlas = ExtResource("3_1bvp3")
@@ -255,6 +256,7 @@ animations = [{
 script = ExtResource("1_ig7tw")
 
 [node name="Player" parent="." unique_id=897371542 instance=ExtResource("2_h2yge")]
+script = ExtResource("3_lquwl")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player" unique_id=1676740585]
 sprite_frames = SubResource("SpriteFrames_yqy7w")
