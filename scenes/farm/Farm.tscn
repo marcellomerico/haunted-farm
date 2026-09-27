@@ -2,8 +2,9 @@
 
 [ext_resource type="TileSet" uid="uid://bhdoy1mt03tgs" path="res://scenes/farm/farm_tileset.tres" id="1_xp5e4"]
 [ext_resource type="PackedScene" uid="uid://dj24ugxefekqx" path="res://scenes/player/player.tscn" id="2_36fi7"]
-[ext_resource type="PackedScene" uid="uid://d1ifvtsd84uoe" path="res://scenes/objects/stone.tscn" id="3_h2amt"]
-[ext_resource type="PackedScene" uid="uid://b2ct3i0yl3d2s" path="res://scenes/objects/tree.tscn" id="4_ismwm"]
+[ext_resource type="PackedScene" uid="uid://d1ifvtsd84uoe" path="res://scenes/objects/stone01.tscn" id="3_h2amt"]
+[ext_resource type="PackedScene" uid="uid://b2ct3i0yl3d2s" path="res://scenes/objects/tree01.tscn" id="4_ismwm"]
+[ext_resource type="PackedScene" uid="uid://bhh5d8y3780g4" path="res://scenes/objects/bush01.tscn" id="5_js0cu"]
 
 [node name="Farm" type="Node2D" unique_id=1109812070]
 
@@ -27,7 +28,10 @@ position = Vector2(70, 64)
 [node name="Camera2D" type="Camera2D" parent="Objects/Player" unique_id=1924183391]
 
 [node name="Stone" parent="Objects" unique_id=1611810128 instance=ExtResource("3_h2amt")]
-position = Vector2(116, 128)
+position = Vector2(120, 112)
 
 [node name="Tree" parent="Objects" unique_id=938360712 instance=ExtResource("4_ismwm")]
-position = Vector2(145, 95)
+position = Vector2(152, 96)
+
+[node name="Bush" parent="Objects" unique_id=113277198 instance=ExtResource("5_js0cu")]
+position = Vector2(152, 128)
