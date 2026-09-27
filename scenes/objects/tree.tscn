@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://b2ct3i0yl3d2s"]
+
+[ext_resource type="Texture2D" uid="uid://w5yjryo7opnt" path="res://assets/third_party/farm_assets/tiles/tree_shake.png" id="1_r6wkp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yqy7w"]
+size = Vector2(10, 5)
+
+[node name="Tree" type="StaticBody2D" unique_id=938360712]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1843020647]
+texture = ExtResource("1_r6wkp")
+offset = Vector2(0, -16)
+region_enabled = true
+region_rect = Rect2(0, 64, 32, 32)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=905521968]
+position = Vector2(0, -2.5)
+shape = SubResource("RectangleShape2D_yqy7w")
