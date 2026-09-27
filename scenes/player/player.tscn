@@ -250,10 +250,17 @@ animations = [{
 "speed": 10.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yqy7w"]
+size = Vector2(8, 4)
+
 [node name="Player" type="CharacterBody2D" unique_id=1262831883]
 script = ExtResource("1_gfjak")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=507184807]
-position = Vector2(239, 132)
+position = Vector2(0, -16)
 sprite_frames = SubResource("SpriteFrames_yqy7w")
 animation = &"walk_down"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1351974188]
+position = Vector2(0, -2)
+shape = SubResource("RectangleShape2D_yqy7w")
