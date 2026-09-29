@@ -4,3 +4,6 @@
 assets/third_party/ 
 .DS_Store
 .DS_Store
+# Referenzbilder mit gekauften Assets (Lizenz)
+docs/*.png
+docs/*.png.import
